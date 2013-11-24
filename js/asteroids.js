@@ -215,6 +215,7 @@ var asteroids = (function(){
 	    this.displayList = new DisplayList();
 	},
 	jsonToUniverse : function(json){
+	    console.log(json);
 	    var dl = this.displayList; 
 	    json.fighters.forEach(function(fighter){
 		dl.push(new Fighter(fighter));
