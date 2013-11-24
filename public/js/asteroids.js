@@ -62,13 +62,17 @@ var universe = (function(){
     })
 				    
     var Sphere = Drawable.extend( {
-	init: function(x, y, radius) {
+	init: function(x, y, radius, color) {
 	    this.x = x;
 	    this.y = y;
 	    this.radius = radius;
+	    this.color =  color;
 	},	
 	draw: function() {
 	    g.save();
+	    if(this.color) {
+		g.fillStyle = this.color;
+	    }
 	    g.translate(this.x, this.y);
 	    g.beginPath();
 	    g.arc(0,0, this.radius, 0, 2*Math.PI);
@@ -168,6 +172,21 @@ var universe = (function(){
     } );
 
     var Asteroid = Drawable.extend({
+	init: function(options) {
+	    this._super(options);
+	    this.radius = options.radius;
+
+	    this.displayList = new DisplayList();
+	    this.displayList.push(
+		new Sphere(this.x, this.y, this.radius)
+	    );
+	},
+	draw: function() {
+	    g.save();
+	    g.fillStyle = "#73A9C2";
+	    this.displayList.draw();
+	    g.restore();
+	}
     });
 
     
@@ -228,6 +247,13 @@ var universe = (function(){
 	    }
 	)
     );
+
+    displayList.push(
+	new Asteroid({
+	    x:500,
+	    y:80,
+	    radius: 70
+	}));
 
     displayList.draw();
 		     
