@@ -1,7 +1,19 @@
+
+var socket = io.connect(window.location.origin);
+
+socket.emit('viewer', {});
+
+socket.on('game-state', function(data){
+    renderScene(data);
+});
+
+
 var universe = (function(){
     var canvas = document.getElementById('overview');
     var g = canvas.getContext('2d');
-
+    
+    
+    
     var Drawable = Class.extend( {
 	init: function(options) {
 	    this.id = options.id;
@@ -19,7 +31,7 @@ var universe = (function(){
 	}
 	
     })
-
+				   
     var DisplayList = Drawable.extend ({
 	init : function() {
 	    this.drawables = [];
@@ -235,18 +247,32 @@ var universe = (function(){
 	    
 	]
     }
-    var displayList = new DisplayList();
-    json.fighters.forEach(function(fighter){
-	displayList.push(new Fighter(fighter));
+
+    var Universe = Drawable.extend({
+	init : function(options) {
+	    this.displayList = new DisplayList();
+	},
+	jsonToUniverse : function(json){
+	    var dl = this.displayList; 
+	    json.fighters.forEach(function(fighter){
+		dl.push(new Fighter(fighter));
+	    });
+	    json.asteroids.forEach(function(asteroid){
+		dl.push(new Asteroid(asteroid));
+	    });
+	    
+	},
+	draw : function() {
+	    g.clearRect(0,0,canvas.width, canvas.height);
+	    g.fillStyle = "black";
+	    g.fillRect(0,0,canvas.width, canvas.height);
+	    
+	    this.displayList.draw();
+	}
     });
-    json.asteroids.forEach(function(asteroid){
-	displayList.push(new Asteroid(asteroid));
-    });
 
-
-   
-    displayList.draw();
-		     
-
-   
+    var universe = new Universe({})
+				   
+    universe.jsonToUniverse(json);
+    universe.draw();
 })()
