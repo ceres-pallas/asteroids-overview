@@ -36,7 +36,7 @@ var asteroids = (function(){
 	    if(drawable instanceof Drawable) {	
 		this.drawables.push(drawable);
 	    }
-	}
+	},
 	clear: function() {
 	    this.drawables = [];
 	}
