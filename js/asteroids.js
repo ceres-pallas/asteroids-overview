@@ -4,6 +4,7 @@ var universe = (function(){
 
     var Drawable = Class.extend( {
 	init: function(options) {
+	    this.id = options.id;
 	    this.x = options.x;
 	    this.y = options.y;
 	    this.color = options.color || "white";
@@ -180,83 +181,70 @@ var universe = (function(){
 	    this.displayList.push(
 		new Sphere(this.x, this.y, this.radius)
 	    );
+
+	    var craterCount = Math.floor((Math.random()*6)+1); 
+	    for(var i=0; i<craterCount; i++) {
+		var craterSize = Math.random()*this.radius*0.3;
+		var grad = g.createRadialGradient(0, 0, 0, 0, 0, craterSize);
+		grad.addColorStop(1,"#73A9C2");
+		grad.addColorStop(0,"black");
+		
+		this.displayList.push(
+		    new Sphere(this.x + (Math.random()-0.5)*Math.cos(2*Math.PI)*this.radius, this.y+(Math.random()-0.5)*Math.cos(2*Math.PI)*this.radius, craterSize , grad )
+		);
+	    }
 	},
 	draw: function() {
 	    g.save();
+	    g.rotate(this.orientation);
 	    g.fillStyle = "#73A9C2";
 	    this.displayList.draw();
 	    g.restore();
 	}
     });
 
-    
-    
+    var json = {
+	"fighters" : [
+	    {
+		"x": 500,
+		"y": 200,
+		"radius": 30,
+		"heading": 0,
+		"speed": 10,
+		"orientation": 0.25*Math.PI,
+		"color": "blue"
+	    },
+	    {
+		"x": 300,
+		"y": 200,
+		"radius": 30,
+		"heading": 0,
+		"speed": 10,
+		"orientation": 0.25*Math.PI,
+		"color": "purple"
+	    }
+	],
+	asteroids : [
+	    {
+		"id" : 1,
+		"x" : 400,
+		"y" : 200,
+		"radius" : 30,
+		"orientation" : 50
+	    }
+	    
+	]
+    }
     var displayList = new DisplayList();
-    displayList.push( 
-	new Fighter (
-	    {
-		x: 300,
-		y: 200,
-		radius: 90,
-		heading: 0,
-		speed:60,
-		orientation: 0.4*Math.PI,
-		color: "red"
-	    }
-	)
-    );
+    json.fighters.forEach(function(fighter){
+	displayList.push(new Fighter(fighter));
+    });
+    json.asteroids.forEach(function(asteroid){
+	displayList.push(new Asteroid(asteroid));
+    });
 
-    displayList.push( 
-	new Fighter (
-	    {
-		x: 500,
-		y: 200,
-		radius: 30,
-		heading: 0,
-		speed: 10,
-		orientation: 0.25*Math.PI,
-		color: "blue"
-	    }
-	)
-    );
 
-    displayList.push( 
-	new Fighter (
-	    {
-		x: 450,
-		y: 130,
-		radius: 30,
-		heading: 0,
-		speed: 10,
-		orientation: 0.25*Math.PI,
-		color: "blue"
-	    }
-	)
-    );
-
-    displayList.push( 
-	new Fighter (
-	    {
-		x: 400,
-		y: 220,
-		radius: 30,
-		heading: 0,
-		speed: 10,
-		orientation: 0.25*Math.PI,
-		color: "blue"
-	    }
-	)
-    );
-
-    displayList.push(
-	new Asteroid({
-	    x:500,
-	    y:80,
-	    radius: 70,
-	    color: "#73A9C2"
-
-	}));
-
+   
     displayList.draw();
 		     
 
