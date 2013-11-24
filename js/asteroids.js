@@ -242,7 +242,7 @@ var asteroids = (function(){
 
     socket.on('game-state', function(data) {
 	console.log(data);
-	universe.jsonToUniverse(data.args);
+	universe.jsonToUniverse(data);
 	universe.draw();
     });
 
