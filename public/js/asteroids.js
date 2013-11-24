@@ -252,7 +252,9 @@ var universe = (function(){
 	new Asteroid({
 	    x:500,
 	    y:80,
-	    radius: 70
+	    radius: 70,
+	    color: "#73A9C2"
+
 	}));
 
     displayList.draw();
