@@ -1,18 +1,9 @@
 
-var socket = io.connect(window.location.origin);
-
-socket.emit('viewer', {});
-
-socket.on('game-state', function(data){
-    renderScene(data);
-});
-
-
-var universe = (function(){
+var asteroids = (function(){
     var canvas = document.getElementById('overview');
     var g = canvas.getContext('2d');
     
-    
+ 
     
     var Drawable = Class.extend( {
 	init: function(options) {
@@ -272,7 +263,16 @@ var universe = (function(){
     });
 
     var universe = new Universe({})
-				   
-    universe.jsonToUniverse(json);
-    universe.draw();
+		
+   var socket = io.connect(window.location.origin);
+
+    socket.emit('viewer', {});
+
+    socket.on('game-state', function(data){
+	universe.jsonToUniverse(json);
+	universe.draw();
+    });
+
+		   
+
 })()
