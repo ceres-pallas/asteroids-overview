@@ -37,6 +37,9 @@ var asteroids = (function(){
 		this.drawables.push(drawable);
 	    }
 	}
+	clear: function() {
+	    this.drawables = [];
+	}
 	
     });
     var Triangle = Drawable.extend( {
@@ -206,38 +209,6 @@ var asteroids = (function(){
 	}
     });
 
-    var json = {
-	"fighters" : [
-	    {
-		"x": 500,
-		"y": 200,
-		"radius": 30,
-		"heading": 0,
-		"speed": 10,
-		"orientation": 0.25*Math.PI,
-		"color": "blue"
-	    },
-	    {
-		"x": 300,
-		"y": 200,
-		"radius": 30,
-		"heading": 0,
-		"speed": 10,
-		"orientation": 0.25*Math.PI,
-		"color": "purple"
-	    }
-	],
-	asteroids : [
-	    {
-		"id" : 1,
-		"x" : 400,
-		"y" : 200,
-		"radius" : 30,
-		"orientation" : 50
-	    }
-	    
-	]
-    }
 
     var Universe = Drawable.extend({
 	init : function(options) {
@@ -254,6 +225,7 @@ var asteroids = (function(){
 	    
 	},
 	draw : function() {
+	    this.displayList.clear();
 	    g.clearRect(0,0,canvas.width, canvas.height);
 	    g.fillStyle = "black";
 	    g.fillRect(0,0,canvas.width, canvas.height);
@@ -268,8 +240,8 @@ var asteroids = (function(){
 
     socket.emit('viewer', {});
 
-    socket.on('game-state', function(data){
-	universe.jsonToUniverse(json);
+    socket.on('game-state', function(data) {
+	universe.jsonToUniverse(data);
 	universe.draw();
     });
 
