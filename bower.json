@@ -1,0 +1,24 @@
+{
+  "name": "asteroids-overview",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ceres-pallas/asteroids-overview",
+  "authors": [
+    "Robin van Kaathoven <robin.vankaathoven@luminis.eu>"
+  ],
+  "description": "View module for asteroids server project",
+  "main": "index.html",
+  "keywords": [
+    "Asteroids",
+    "Canvas",
+    "Displaylist",
+    "Boo-ya-ka-sha"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
